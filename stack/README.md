@@ -1,5 +1,5 @@
 # Stack
-<b>Stack</b> is a linear data structure which follows a particular order in which the operations are performed. The order may be LIFO(Last In First Out) or FILO(First In Last Out).
+<b>Stack</b> is a linear data structure which follows a particular order in which the operations are performed. The order may be LIFO(Last In First Out) 
 
 <ul>
 <li>push() : Adds an item in the stack. If the stack is full, then it is said to be an Overflow condition.</li>
@@ -89,5 +89,39 @@ int pop(Stack* stack){
         stack->top--;
         return item;
     }
+}
+```
+
+## Print stack
+```c
+void print_stack(Stack* stack){
+    if (is_empty(stack)){
+        printf("Stack is empty\n");
+    } else {
+        for (int i = 0; i <= stack->top; i++){
+            printf("%d ", stack->array[i]);
+        }
+        printf("\n");
+    }
+}
+```
+
+## Main function
+```c
+int main(){
+    Stack* stack = initStack();
+    push(stack, 1);
+    push(stack, 2);
+    push(stack, 3);
+    push(stack, 4);
+    push(stack, 5);
+    push(stack, 6);
+    push(stack, 7);
+    push(stack, 10);
+    pop(stack);
+    pop(stack);
+    print_stack(stack);
+    pop(stack);
+    return 0;
 }
 ```
