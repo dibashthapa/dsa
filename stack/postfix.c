@@ -63,7 +63,7 @@ int is_number(char c)
 
 int is_operand(char c)
 {
-    return   (c >= 48 && c <= 57);
+    return (c >= 48 && c <= 57);
 }
 
 int is_operator(char c)
@@ -108,13 +108,16 @@ int compare(char tos, char c)
     return precedence(tos) >= precedence(c);
 }
 
-
+char peek(Stack *s)
+{
+    return s->elements[s->tos];
+}
 
 int main()
 {
     char infix[MAX_SIZE];
     char postfix[MAX_SIZE];
-    
+
     printf("Enter the expression ?\n");
     scanf("%s", infix);
 
@@ -122,16 +125,19 @@ int main()
 
     Stack *stack = initStack();
 
-
     int length = strlen(infix);
 
     for (size_t i = 0; i < length; i++)
     {
         char c = infix[i];
-        if (is_operator(c))
+        if (c == '(')
+        {
+            push(stack, c);
+        }
+        else if (is_operator(c))
         {
 
-            if (!compare(stack->elements[stack->tos], c))
+            if (!compare(peek(stack), c))
             {
                 push(stack, c);
             }
@@ -146,27 +152,43 @@ int main()
         {
             sprintf(postfix, "%s%c", postfix, c);
         }
+        else if (c == ')')
+        {
+            while (peek(stack) != '(')
+            {
+                char ch = pop(stack);
+                sprintf(postfix, "%s%c", postfix, ch);
+            }
+        }
     }
 
     while (stack->tos != -1)
     {
-        sprintf(postfix, "%s%c", postfix, pop(stack));
+        char ch = pop(stack);
+        if (ch != '(')
+        {
+            sprintf(postfix, "%s%c", postfix, ch);
+        }
     }
 
-    empty(stack);
 
     printf("Postfix expression is : %s \n", postfix);
 
     int result;
 
-    for (size_t i=0; i < strlen(postfix); i++){
-        if (is_number(postfix[i])){
-            push(stack, postfix[i]);
-        } else if (is_operator(postfix[i])){
-            int op1 = (int)pop(stack) - 48;
-            int op2 = (int)pop(stack) - 48;
+    for (size_t i = 0; i < strlen(postfix); i++)
+    {
+        if (is_number(postfix[i]))
+        {
+            push(stack, postfix[i] - '0');
+        }
+         if (is_operator(postfix[i]))
+        {
+            int op1 = pop(stack) ;
+            int op2 = pop(stack);
             result = calculate(op1, op2, postfix[i]);
-            push(stack, (char)result+48);
+            printf(" %d %c %d = %d \n", op1,  postfix[i], op2, result);
+            push(stack, result);
         }
     }
 
