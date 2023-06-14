@@ -130,7 +130,7 @@ int main()
     for (size_t i = 0; i < length; i++)
     {
         char c = infix[i];
-        if (c == '(')
+         if (c == '(')
         {
             push(stack, c);
         }
@@ -171,10 +171,12 @@ int main()
         }
     }
 
-
     printf("Postfix expression is : %s \n", postfix);
 
     int result;
+
+
+    printf("Postfix Evaluation is \n");
 
     for (size_t i = 0; i < strlen(postfix); i++)
     {
@@ -182,12 +184,12 @@ int main()
         {
             push(stack, postfix[i] - '0');
         }
-         if (is_operator(postfix[i]))
+        if (is_operator(postfix[i]))
         {
-            int op1 = pop(stack) ;
+            int op1 = pop(stack);
             int op2 = pop(stack);
             result = calculate(op1, op2, postfix[i]);
-            printf(" %d %c %d = %d \n", op1,  postfix[i], op2, result);
+            printf(" %d %c %d = %d \n", op1, postfix[i], op2, result);
             push(stack, result);
         }
     }
